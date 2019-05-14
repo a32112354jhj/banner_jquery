@@ -7,6 +7,7 @@
   width: 1200px;
   height: 300px;
   overflow: hidden;
+  line-height: 1.5;
 }
 
 .banner .wrap {
@@ -21,20 +22,38 @@
 .banner .btn_sty {
   position: absolute;
   display: inline-block;
-  bottom: 5px;
-  right: 5px;
-  background-color: #aaa;
-  color: #fff;
-  padding: 5px;
-  font-size: 12px;
-  z-index: 2;
-  border-radius: 5px;
-  text-decoration: none;
-  -webkit-transition: .3s;
-  transition: .3s;
+  bottom: 0px;
+  right: 0px;
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #a3a3a3;
+  padding: 2px 2px 2px 8px;
+  font-size: 13px;
+  border-radius: 3px 0 0 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.banner .btn_sty:after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin: 2px;
+  border-style: solid;
+  border-width: 3px 3px 0;
+  border-color: #a3a3a3 transparent transparent;
+}
+
+.banner .btn_sty.open:after {
+  border-width: 0 3px 3px;
+  border-color: transparent transparent #a3a3a3;
 }
 
 .banner .btn_sty:hover {
-  background-color: #555;
+  color: #fff;
 }
 /*# sourceMappingURL=sty.css.map */

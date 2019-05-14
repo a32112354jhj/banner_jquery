@@ -34,6 +34,7 @@ Banner縮放(banner)
         }
     };
 
+
     // 改變class名稱
     Module.prototype.ClassNameChange = function (className) {
         this.$ele.removeClass(this.option.class.closed);
@@ -41,8 +42,10 @@ Banner縮放(banner)
         this.$ele.removeClass(this.option.class.opened);
         this.$ele.removeClass(this.option.class.opening);
         this.$ele.addClass(className);
-    }
 
+        // 按鈕狀態樣式切換
+        // openStatus? $('.btn_sty').addClass('open'):$('.btn_sty').removeClass('open');
+    }
 
     // 展開
     Module.prototype.open = function () {
@@ -51,7 +54,10 @@ Banner縮放(banner)
         $('.' + this.option.button.class).html(this.option.button.closeText);
         this.ClassNameChange(this.option.class.opened);
         openStatus = true;
+        $('.btn_sty').addClass('open');
         return;
+
+
     };
 
     // 關閉
@@ -61,33 +67,42 @@ Banner縮放(banner)
         $('.' + this.option.button.class).html(this.option.button.openText);
         this.ClassNameChange(this.option.class.closed);
         openStatus = false;
+        $('.btn_sty').removeClass('open');
         return;
+
+
     };
 
-    //展開中
+    //展開(有動畫)
     Module.prototype.opening = function () {
         var elem = this;
+        this.ClassNameChange(this.option.class.opening);
+        setTimeout(function () { elem.ClassNameChange(elem.option.class.opened); }, 1500);
 
         $('.wrap').animate({ "top": "0px" }, 0);
         $('.banner').animate({ height: '300px' }, 1500);
         $('.' + this.option.button.class).html(this.option.button.closeText);
-        this.ClassNameChange(this.option.class.opening);
-        setTimeout(function () { elem.ClassNameChange(elem.option.class.opened); }, 1500);
+
         openStatus = true;
         this.WhenTransition();
+        $('.btn_sty').addClass('open');
         return;
+
+
     };
 
-    // 關閉中
+    // 關閉(有動畫)
     Module.prototype.closing = function () {
         var elem = this;
+        this.ClassNameChange(this.option.class.closing);
+        setTimeout(function () { elem.ClassNameChange(elem.option.class.closed); }, 1500);
         $('.banner').animate({ height: '80px' }, 1500);
         $('.wrap').delay(1500).animate({ top: '-300px' }, 0);
         $('.' + this.option.button.class).html(this.option.button.openText);
-        this.ClassNameChange(this.option.class.closing);
-        setTimeout(function () { elem.ClassNameChange(elem.option.class.closed); }, 1500);
+
         openStatus = false;
         this.WhenTransition();
+        $('.btn_sty').removeClass('open');
         return;
     };
 
@@ -129,11 +144,11 @@ Banner縮放(banner)
                 module = new Module(this, opts);
                 $this.data(ModuleName, module);
 
-                $this.append('<a href="javascript:;" class="' + opts.button.class + ' btn_sty"></a>');
+                $this.append('<div class="' + opts.button.class + ' btn_sty"></div>');
 
                 // 開始狀態
-                opts.openAtStart?module.open():module.close();
-                
+                opts.openAtStart ? module.open() : module.close();
+
                 // 按鈕操控
                 $('.' + opts.button.class).click(function () {
                     if (opts.transition == false) {
@@ -144,9 +159,14 @@ Banner縮放(banner)
                     }
                 });
 
+
+
                 // 自動收合
                 if (opts.autoToggle == true) {
                     openStatus ? module.closing() : module.opening();
+                }
+                else if (opts.autoToggle == false){
+                    openStatus ? module.close() : module.open();
                 }
                 else if (typeof opts.autoToggle != 'bool') {
                     // 延遲自動展開
